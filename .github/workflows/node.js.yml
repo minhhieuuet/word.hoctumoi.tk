@@ -14,16 +14,16 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [14.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: test ssh connection
+      uses: appleboy/ssh-actions@master
       with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-    - run: npm run build
+              host: 139.180.204.128
+              username: root
+              key: ${{ secrets.WORD_SECRET }}
+              port: 22
+              script: |
+                  cd /var/www/html/word.hoctumoi.tk
+                  git pull origin master
+                  git status
+    
